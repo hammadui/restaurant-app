@@ -1,17 +1,36 @@
-import express from "express";
-import connectDB from "./config/mongo";
-import "dotenv/config";
+import "dotenv/config"
+import express from "express"
+import cors from "cors"
+import helmet from "helmet"
+import connectDB from "./config/mongo"
+import setupGraphQL from "./graphql"
 
-const app = express();
+const app = express()
+
+app.use(cors())
+app.use(helmet())
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 
-const PORT =  process.env.PORT || 3000 
-
-connectDB();
-
-app.listen(PORT, ()=>{
-  console.log("Server Started sucessfully");
-}).on("error",(err)=>{
-  console.log("Error starting server")
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" })
 })
+
+const PORT = process.env.PORT || 3000
+
+const startServer = async (): Promise<void> => {
+  await connectDB()
+  await setupGraphQL(app)
+
+  app
+    .listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+      console.log(`GraphQL ready at http://localhost:${PORT}/graphql`)
+    })
+    .on("error", (err) => {
+      console.error("Server failed to start:", err)
+      process.exit(1)
+    })
+}
+
+startServer()
