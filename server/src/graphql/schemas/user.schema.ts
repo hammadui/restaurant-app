@@ -5,7 +5,7 @@ const userTypeDefs = `#graphql
         name: String!
         email: String!
         role: String!
-        phone: String!
+        phone: String
         createdAt: String!
         updatedAt: String!
     }

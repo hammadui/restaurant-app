@@ -31,7 +31,7 @@ const generateToken = (id: string, role: string): string => {
   )
 }
 
-const isAuthenticated = (context: Context) => {
+export const isAuthenticated = (context: Context) => {
   if (!context.user) {
     throw new GraphQLError("You must be logged in", {
       extensions: { code: "UNAUTHENTICATED" }
@@ -40,7 +40,7 @@ const isAuthenticated = (context: Context) => {
   return context.user
 }
 
-const isAdmin = (context: Context) => {
+export const isAdmin = (context: Context) => {
   const user = isAuthenticated(context)
   if (user.role !== "admin") {
     throw new GraphQLError("You do not have permission", {

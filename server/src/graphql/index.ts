@@ -6,6 +6,12 @@ import { expressMiddleware } from '@as-integrations/express5';
 
 import userTypeDefs from "./schemas/user.schema"
 import userResolvers from "./resolvers/user.resolver"
+import categoryTypeDefs from "./schemas/category.schema"
+import categoryResolver from "./resolvers/category.resolver"; 
+import orderResolver from "./resolvers/order.resolver";
+import orderTypeDefs from "./schemas/order.schema";
+import menuItemResolver from "./resolvers/menuitem.resolver";
+import menuTypeDefs from "./schemas/menuItem.schema";
 
 export interface Context {
   user?: {
@@ -13,14 +19,11 @@ export interface Context {
     role: string
   }
 }
-
-const typeDefs = [userTypeDefs]
-const resolvers = [userResolvers]
+const typeDefs = [userTypeDefs, categoryTypeDefs, menuTypeDefs, orderTypeDefs]
+const resolvers = [userResolvers, categoryResolver, menuItemResolver, orderResolver]
 
 const setupGraphQL = async (app: Application): Promise<void> => {
-
   const server = new ApolloServer<Context>({ typeDefs, resolvers })
-
   await server.start()
 
   app.use(

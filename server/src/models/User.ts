@@ -7,7 +7,7 @@ export interface IUser extends Document{
     role: "customer"|"admin"
     phone?:string
     createdAt:Date
-    updatedAT:Date
+    updatedAt:Date
 }
 
 const userSchema = new Schema<IUser>(
